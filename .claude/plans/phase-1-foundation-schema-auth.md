@@ -24,13 +24,14 @@ The project is a starter template with a placeholder `todos` table and no databa
 2. Configure Better Auth with Drizzle adapter + admin plugin (roles: admin/staff)
 3. Create TanStack Start middleware for auth enforcement
 4. Build login/register pages and auth guard layout route
-5. Update branding from starter template to TitanWMS
+5. Clean up styles.css and all components to use Shadcn/UI exclusively
+6. Update branding from starter template to TitanWMS
 
 ## Feature Metadata
 
 **Feature Type**: New Capability
 **Estimated Complexity**: High
-**Primary Systems Affected**: Database schema, Authentication, Routing
+**Primary Systems Affected**: Database schema, Authentication, Routing, Styling
 **Dependencies**: zod (to install), Better Auth admin plugin (already in better-auth package)
 
 ---
@@ -47,6 +48,7 @@ The project is a starter template with a placeholder `todos` table and no databa
 - `src/integrations/better-auth/header-user.tsx` (line 39) — Links to `/demo/better-auth`, change to `/login`
 - `src/routes/__root.tsx` (line 22) — Title says "TanStack Start Starter", change to "TitanWMS"
 - `src/components/Header.tsx` (line 15) — Branding says "TanStack Start", change to "TitanWMS"
+- `src/styles.css` — Has Shadcn imports + variables BUT also full of TanStack template cruft — CLEAN UP
 - `src/router.tsx` — Router config, no changes needed
 - `drizzle.config.ts` — Drizzle config pointing to `src/db/schema.ts`, no changes needed
 - `.env.example` — Has DATABASE_URL, BETTER_AUTH_URL, BETTER_AUTH_SECRET
@@ -88,15 +90,17 @@ export const Route = createFileRoute('/path')({ component: MyComponent })
 function MyComponent() { return (...) }
 ```
 
-**CSS classes**: Use existing design tokens — `island-shell`, `page-wrap`, `nav-link`, CSS variables like `var(--sea-ink)`, `var(--lagoon-deep)`, etc. from `src/styles.css`
+**CSS classes**: Use Shadcn/UI design tokens exclusively — `bg-background`, `text-foreground`, `bg-card`, `text-muted-foreground`, `bg-primary`, etc. Do NOT use the old TanStack template classes (island-shell, page-wrap, nav-link, sea-ink, lagoon, etc.) — those will be removed in Task 2.
 
 ---
 
 ## IMPLEMENTATION PLAN
 
-### Phase 1: Dependencies & Branding
+### Phase 1: Dependencies & Cleanup
 - Install zod
+- Clean up styles.css: remove all TanStack Start template styles, keep only Shadcn/Tailwind foundation
 - Update branding (root title, header text, header-user link)
+- Rewrite Header, Footer, root layout, index, about pages to use Shadcn classes
 
 ### Phase 2: Database Schema
 - Complete rewrite of schema.ts with all 14 tables + enums + relations + indexes + constraints
@@ -107,8 +111,8 @@ function MyComponent() { return (...) }
 - Create server middleware (requireAuth, requireAdmin)
 
 ### Phase 4: Auth UI & Guard
-- Login page
-- Register page
+- Login page (using Shadcn components: Card, Button, Input, Label)
+- Register page (using Shadcn components)
 - _authed.tsx layout route
 
 ### Phase 5: Database Setup
@@ -124,20 +128,84 @@ function MyComponent() { return (...) }
 - **ACTION**: Run `npm install zod`
 - **VALIDATE**: `npm ls zod`
 
-### Task 2: UPDATE `src/routes/__root.tsx`
+### Task 2: UPDATE `src/styles.css` — CLEAN UP (remove TanStack template styles)
 
-- **IMPLEMENT**: Change title meta from "TanStack Start Starter" to "TitanWMS" (line 22)
-- **VALIDATE**: `npm run build` (no errors)
+- **IMPLEMENT**: Strip out all TanStack Start template-specific styles while keeping Shadcn foundation
+- **KEEP** (Shadcn/Tailwind foundation):
+  - `@import "tailwindcss"`
+  - `@import "tw-animate-css"`
+  - `@import "shadcn/tailwind.css"`
+  - `@import "@fontsource-variable/jetbrains-mono"`
+  - `@custom-variant dark (&:is(.dark *))`
+  - `@plugin "@tailwindcss/typography"`
+  - `@theme` block with `--font-sans`
+  - All Shadcn CSS variables (`:root` block with `--background`, `--foreground`, `--primary`, `--card`, `--muted`, `--accent`, `--destructive`, `--border`, `--input`, `--ring`, `--chart-*`, `--radius`, `--sidebar-*`)
+  - `.dark` class overrides for Shadcn variables
+  - `@theme inline` block with Shadcn color mappings (`--color-*`)
+  - `@layer base` block
+  - Basic reset: `box-sizing: border-box`, `html/body/#app min-height: 100%`, `body margin: 0`
+- **REMOVE** (TanStack Start template cruft):
+  - All `--sea-ink`, `--lagoon`, `--palm`, `--sand`, `--foam`, `--surface`, `--line`, `--inset-glint`, `--kicker`, `--bg-base`, `--header-bg`, `--chip-bg`, `--chip-line`, `--link-bg-hover`, `--hero-a`, `--hero-b` CSS variables
+  - `:root[data-theme="dark"]` block (old theme system)
+  - `@media (prefers-color-scheme: dark)` block with old variables
+  - Complex body background gradients (`radial-gradient`, `linear-gradient`)
+  - `body::before` and `body::after` pseudo-element overlays
+  - Custom `a` link styling (color, text-decoration)
+  - Custom `code` styling
+  - `.page-wrap`, `.display-title`, `.island-shell`, `.feature-card`, `.island-kicker` classes
+  - `.nav-link` and `.nav-link.is-active` classes
+  - `.site-footer` class
+  - `.rise-in` animation and `@keyframes rise-in`
+  - Google Fonts import for Fraunces/Manrope (line 1) — keep only JetBrains Mono
+- **ALSO**: Update body base styles to use Shadcn tokens: `body { font-family: var(--font-sans); }` — the `@layer base` block already handles `bg-background text-foreground`
+- **GOTCHA**: The `@theme` block with `--font-sans: "Manrope"` should be updated to use a system font stack or kept if you want Manrope. Since we're removing the Google Fonts import for Manrope, update to: `--font-sans: ui-sans-serif, system-ui, sans-serif` or keep Manrope and import it via `@fontsource-variable/manrope` (install first).
+- **VALIDATE**: `npm run dev` — app loads with clean Shadcn styling, no broken styles
 
-### Task 3: UPDATE `src/components/Header.tsx`
+### Task 3: UPDATE `src/routes/__root.tsx`
 
-- **IMPLEMENT**: Change "TanStack Start" text to "TitanWMS" (line 15)
-- **VALIDATE**: Visual check in dev server
-
-### Task 4: UPDATE `src/integrations/better-auth/header-user.tsx`
-
-- **IMPLEMENT**: Change `to="/demo/better-auth"` to `to="/login"` (line 39)
+- **IMPLEMENT**:
+  - Change title meta from "TanStack Start Starter" to "TitanWMS" (line 22)
+  - Remove the `THEME_INIT_SCRIPT` and inline `<script>` tag (line 9, 39) — Shadcn dark mode uses `.dark` class, managed differently
+  - Update body classes to use Shadcn: `className="min-h-screen font-sans antialiased"` (remove old template classes)
 - **VALIDATE**: `npm run build`
+
+### Task 4: UPDATE `src/components/Header.tsx`
+
+- **IMPLEMENT**:
+  - Change "TanStack Start" branding to "TitanWMS" (line 15)
+  - Rewrite using Shadcn classes: `bg-background border-b border-border` instead of `var(--header-bg)`, `var(--line)`
+  - Remove TanStack social links (X/Twitter, GitHub) — not relevant to WMS
+  - Keep: BetterAuthHeader, ThemeToggle, nav links
+  - Update nav link styles from `.nav-link` / `.is-active` to Shadcn: `text-muted-foreground hover:text-foreground` and `text-foreground font-medium` for active
+- **VALIDATE**: `npm run dev` — header renders with Shadcn styling
+
+### Task 4b: UPDATE `src/components/Footer.tsx`
+
+- **IMPLEMENT**: Rewrite using Shadcn classes: `border-t border-border bg-background text-muted-foreground` instead of `.site-footer` and `var(--sea-ink-soft)` etc.
+- **VALIDATE**: `npm run dev`
+
+### Task 4c: UPDATE `src/integrations/better-auth/header-user.tsx`
+
+- **IMPLEMENT**: Change sign-in link from `to="/demo/better-auth"` to `to="/login"` (line 39). Update button/link styles to use Shadcn classes (`bg-primary text-primary-foreground`, `border-border`, etc.) instead of hardcoded neutral colors.
+- **VALIDATE**: `npm run build`
+
+### Task 4d: UPDATE `src/routes/index.tsx`
+
+- **IMPLEMENT**: Replace the entire TanStack Start template landing page with a simple TitanWMS welcome/redirect. Options:
+  - Minimal: redirect authenticated users to dashboard, show login prompt for unauthenticated
+  - Or: simple branded landing page using Shadcn Card components
+  - Remove all references to old template classes (island-shell, page-wrap, feature-card, rise-in, etc.)
+- **VALIDATE**: `npm run dev`, navigate to `/`
+
+### Task 4e: UPDATE `src/routes/about.tsx`
+
+- **IMPLEMENT**: Either remove this route entirely (not needed for WMS) or rewrite content to be about TitanWMS using Shadcn classes. Remove all old template classes (island-shell, island-kicker, page-wrap, etc.)
+- **VALIDATE**: `npm run build`
+
+### Task 4f: UPDATE `src/components/ThemeToggle.tsx`
+
+- **IMPLEMENT**: Ensure theme toggle works with Shadcn's `.dark` class convention. The existing implementation toggles `light`/`dark` classes on `<html>` and sets `data-theme` — verify it's compatible with `@custom-variant dark (&:is(.dark *))` from Shadcn config. Update button styles to use Shadcn classes.
+- **VALIDATE**: Toggle themes in dev server, verify Shadcn dark mode works
 
 ### Task 5: UPDATE `src/db/schema.ts` — FULL REWRITE (most critical task)
 
@@ -415,19 +483,21 @@ createAuthClient({ plugins: [adminClient()] })
 
 ### Task 9: CREATE `src/routes/login.tsx`
 
-- **IMPLEMENT**: Login page with email/password form
-- **PATTERN**: Follow route pattern from `src/routes/about.tsx` — `createFileRoute('/login')({ component })`
+- **IMPLEMENT**: Login page with email/password form using Shadcn components
+- **PATTERN**: Follow route pattern — `createFileRoute('/login')({ component })`
+- **UI COMPONENTS**: Use Shadcn `Card` (`CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`), `Button`, `Input`, `Label` — these are available via `shadcn/tailwind.css` import and Tailwind classes (e.g. `bg-card`, `bg-primary`, `border-input`)
 - Use `authClient.signIn.email()` from `#/lib/auth-client`
 - Use React `useState` for form state and error messages
 - On success: use `useNavigate()` from `@tanstack/react-router` to redirect to `/`
-- Style with existing design tokens: `page-wrap`, `island-shell`, CSS variables
+- Layout: centered card on `min-h-screen flex items-center justify-center bg-background`
 - Include link to `/register`
 - **VALIDATE**: `npm run dev`, navigate to `/login`
 
 ### Task 10: CREATE `src/routes/register.tsx`
 
-- **IMPLEMENT**: Registration page with name, email, password, confirm password
-- **PATTERN**: Mirror login.tsx structure
+- **IMPLEMENT**: Registration page with name, email, password, confirm password using Shadcn components
+- **PATTERN**: Mirror login.tsx structure and Shadcn component usage
+- **UI COMPONENTS**: Same as login — Card, Button, Input, Label
 - Use `authClient.signUp.email()` from `#/lib/auth-client`
 - Client-side validation: passwords match, required fields
 - On success: redirect to `/login` or auto-sign-in
@@ -547,9 +617,12 @@ npm run db:studio      # Verify data in all tables
 - [ ] Auth guard layout redirects unauthenticated users to /login
 - [ ] requireAuth middleware works in server functions
 - [ ] requireAdmin middleware blocks non-admin users
-- [ ] Header shows "TitanWMS" branding
+- [ ] styles.css cleaned: no TanStack template styles remain (no sea-ink, island-shell, etc.)
+- [ ] All components use Shadcn design tokens (bg-background, text-foreground, border-border, etc.)
+- [ ] Header shows "TitanWMS" branding with Shadcn styling
 - [ ] Page title shows "TitanWMS"
 - [ ] Sign-in link goes to /login
+- [ ] Login/register pages use Shadcn Card, Button, Input, Label patterns
 - [ ] Seed script creates demo data successfully
 - [ ] `npm run build` passes with zero errors
 - [ ] `npm run check` passes with zero errors
@@ -558,7 +631,7 @@ npm run db:studio      # Verify data in all tables
 
 ## COMPLETION CHECKLIST
 
-- [ ] All 13 tasks completed in order
+- [ ] All tasks completed in order (Tasks 1-13, including 4b-4f)
 - [ ] Each task validation passed
 - [ ] Full build succeeds (`npm run build`)
 - [ ] Lint/format passes (`npm run check`)
@@ -574,5 +647,6 @@ npm run db:studio      # Verify data in all tables
 - **Better Auth table names**: Using singular names (`user`, `session`, `account`, `verification`) to match Better Auth defaults. Domain tables use plural (`products`, `warehouses`, etc.).
 - **Role strategy**: Using Better Auth's admin plugin with `defaultRole: 'staff'`. First admin user created via seed script. PRD roles are "admin" and "staff" (not "admin" and "user").
 - **Middleware location**: `src/server/middleware.ts` — matches PRD's `src/server/` directory for server functions. The middleware will be reused by all server functions in Phase 2.
-- **No Shadcn/UI yet**: Login/register pages use raw Tailwind + existing design tokens. Shadcn installation is deferred to Phase 3 (Core UI) per the PRD.
+- **Shadcn/UI from the start**: Shadcn is already installed (`shadcn/tailwind.css` imported, all CSS variables present). All UI should use Shadcn design tokens and Tailwind utility classes from day one. The old TanStack Start template styles (island-shell, sea-ink, lagoon, etc.) are removed in Task 2.
+- **Style cleanup scope**: Task 2 removes ~200 lines of template CSS. Tasks 3-4f update all existing components/routes to use Shadcn classes. This means Header, Footer, ThemeToggle, index page, about page, and header-user all get rewritten to use `bg-background`, `text-foreground`, `border-border`, etc.
 - **Schema is the most critical file**: ~300-400 lines. Triple-check all FK references, enum usage, and constraint syntax before running db:push.
