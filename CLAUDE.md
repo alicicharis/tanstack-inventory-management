@@ -59,3 +59,9 @@ drizzle/           # Generated migration files
 - **Environment**: DB connection string in `DATABASE_URL` via `.env.local` or `.env`
 - **Typescript**: Never use type any, always define types
 - **Style**: Avoid inline styles, use only when you must use them
+
+## References
+
+| Topic | File | Description |
+|-------|------|-------------|
+| TanStack Start | [.claude/references/tanstack.md](.claude/references/tanstack.md) | Server functions, middleware, routing gotchas, request/response helpers |
