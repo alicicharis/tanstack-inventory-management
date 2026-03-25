@@ -33,23 +33,28 @@ Before generating, ask the user for these details if not already provided in the
 Generate the requirements.md with ALL of the following sections:
 
 ### 1. Project Brief
+
 - Project name and one-line description
 - The architectural invariant stated prominently
 - MVP goal in 1-2 sentences
 
 ### 2. Tech Stack
+
 - Every technology as a bullet with its role
 - Format: `- **Role:** Technology`
 - Be explicit — this prevents the AI agent from introducing unwanted dependencies
 
 ### 3. Core Data Entities & Relationships
+
 For EACH entity:
+
 - Entity name and purpose
 - Every field with type and constraints (nullable, unique, default, enum values)
 - Relationships (FK, junction tables)
 - Derived/computed fields
 
 Format:
+
 ```
 - **EntityName:** Purpose
   - Fields: `field_name` (type, constraints), ...
@@ -59,7 +64,9 @@ Format:
 CRITICAL: Every status/type/enum value defined here MUST have a corresponding user journey in section 4 that produces it. No orphaned types.
 
 ### 4. User Journeys (Step-Numbered, Transactional)
+
 For EACH core workflow:
+
 - Journey name and which user role performs it
 - Preconditions
 - Numbered steps describing EXACT database/system operations (not UI clicks)
@@ -71,41 +78,50 @@ Write transactional steps like: "1. Check warehouse A has sufficient stock. 2. D
 Do NOT write UI-level steps like "User clicks the transfer button."
 
 ### 5. API Surface & Route Design
+
 For each feature area:
+
 - Server functions / API endpoints (method, path, request shape, response shape)
 - Query vs mutation
 - Auth requirements per endpoint
 
 ### 6. Validation Rules & Business Constraints
+
 - Field-level validation (formats, ranges, required)
 - Cross-entity constraints
 - Capacity limits, thresholds
 - What happens when a constraint is violated
 
 ### 7. Auth & Authorization
+
 - User roles and permissions matrix
 - Which journeys/endpoints are restricted to which roles
 - Session/token strategy
 
 ### 8. UI/UX Requirements
+
 For each page/view:
+
 - Page name and URL pattern
 - Component hierarchy (parent > child)
 - Key interactions and state changes
 - Data source for each component
 
 ### 9. Non-Functional Requirements
+
 - Performance targets (measurable, e.g., "page load < 2s at P95")
 - Concurrent access strategy
 - Pagination strategy for large datasets
 - Error handling patterns (toast, inline, redirect)
 
 ### 10. Scope Boundaries
+
 - **In scope (MVP):** Checklist of what ships first
 - **Out of scope:** Explicitly excluded features with brief reason
 - **Future considerations:** Parking lot for v2
 
 ### 11. Rules of Engagement for the AI Agent
+
 - Build order (e.g., schema first, then API, then UI)
 - Transaction requirements
 - Type safety expectations
@@ -113,6 +129,7 @@ For each page/view:
 - Negative constraints ("Do NOT...")
 
 ### 12. Glossary
+
 Domain-specific terms the AI must use consistently in code (variable names, types, comments).
 
 ## Writing Rules
@@ -130,6 +147,7 @@ Follow these rules strictly when generating the document:
 ## Quality Checks
 
 Before finalizing, verify:
+
 - [ ] Every entity has field-level detail
 - [ ] Every status/type/enum has a journey that produces it
 - [ ] Every journey has error cases defined
@@ -143,6 +161,7 @@ Before finalizing, verify:
 ## Output Confirmation
 
 After creating the file:
+
 1. Confirm the file path
 2. List any assumptions made due to missing information
 3. Flag any entity types/statuses that lack a user journey

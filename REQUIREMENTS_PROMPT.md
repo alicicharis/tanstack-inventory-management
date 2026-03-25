@@ -113,12 +113,12 @@ Generate the full requirements.md now. Be specific at the field level for entiti
 
 This template was designed by synthesizing:
 
-| Source | Key Insight |
-|---|---|
-| **PRD best practices** (Atlassian, HashiCorp RFC, Shape Up) | Goals/non-goals, phased scope, measurable success criteria |
-| **AI-agent optimization research** | Field-level specificity, negative constraints, named file paths, step-numbered operations |
-| **Analysis of a real requirements.md** (TitanWMS) | Architectural invariant up front, transactional journeys, explicit agent rules |
-| **Common failure modes** | Missing auth, orphaned types with no journey, unspecified error handling, no UI requirements |
+| Source                                                      | Key Insight                                                                                  |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **PRD best practices** (Atlassian, HashiCorp RFC, Shape Up) | Goals/non-goals, phased scope, measurable success criteria                                   |
+| **AI-agent optimization research**                          | Field-level specificity, negative constraints, named file paths, step-numbered operations    |
+| **Analysis of a real requirements.md** (TitanWMS)           | Architectural invariant up front, transactional journeys, explicit agent rules               |
+| **Common failure modes**                                    | Missing auth, orphaned types with no journey, unspecified error handling, no UI requirements |
 
 ### Key Principles
 

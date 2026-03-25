@@ -76,14 +76,16 @@ The project is a starter template with a placeholder `todos` table and no databa
 ### Patterns to Follow
 
 **Import style** (from existing code):
+
 ```typescript
-import { auth } from '#/lib/auth'        // path alias
-import { db } from '#/db'                // shorter alias
+import { auth } from '#/lib/auth' // path alias
+import { db } from '#/db' // shorter alias
 ```
 
 **Code style**: No semicolons, single quotes, trailing commas everywhere (Prettier config)
 
 **Route pattern** (from `src/routes/about.tsx`):
+
 ```typescript
 import { createFileRoute } from '@tanstack/react-router'
 export const Route = createFileRoute('/path')({ component: MyComponent })
@@ -97,25 +99,30 @@ function MyComponent() { return (...) }
 ## IMPLEMENTATION PLAN
 
 ### Phase 1: Dependencies & Cleanup
+
 - Install zod
 - Clean up styles.css: remove all TanStack Start template styles, keep only Shadcn/Tailwind foundation
 - Update branding (root title, header text, header-user link)
 - Rewrite Header, Footer, root layout, index, about pages to use Shadcn classes
 
 ### Phase 2: Database Schema
+
 - Complete rewrite of schema.ts with all 14 tables + enums + relations + indexes + constraints
 
 ### Phase 3: Auth Wiring
+
 - Configure Better Auth with Drizzle adapter + admin plugin
 - Update auth client with adminClient plugin
 - Create server middleware (requireAuth, requireAdmin)
 
 ### Phase 4: Auth UI & Guard
+
 - Login page (using Shadcn components: Card, Button, Input, Label)
 - Register page (using Shadcn components)
-- _authed.tsx layout route
+- \_authed.tsx layout route
 
 ### Phase 5: Database Setup
+
 - Push schema to database
 - Create seed script
 
@@ -334,6 +341,7 @@ CHECK: `check('stock_quantity_non_negative', sql\`"current_quantity" >= 0\`)`
 | createdAt | timestamp('created_at') | NOT NULL, defaultNow |
 
 Indexes:
+
 - `movements_product_type_created_idx` on `(productId, type, createdAt)`
 - `movements_from_warehouse_idx` on `fromWarehouseId`
 - `movements_to_warehouse_idx` on `toWarehouseId`
@@ -436,6 +444,7 @@ Define relations for ALL tables to enable Drizzle's relational query API:
 - **PATTERN**: Keep existing `emailAndPassword` and `tanstackStartCookies()` config
 
 Target config:
+
 ```
 betterAuth({
   database: drizzleAdapter(db, { provider: 'pg' }),
@@ -453,6 +462,7 @@ betterAuth({
 - **IMPORTS**: `adminClient` from `better-auth/client/plugins`
 
 Target:
+
 ```
 createAuthClient({ plugins: [adminClient()] })
 ```
@@ -464,6 +474,7 @@ createAuthClient({ plugins: [adminClient()] })
 - **IMPLEMENT**: Two middleware functions using TanStack Start's `createMiddleware`:
 
 **requireAuth**:
+
 - Import `createMiddleware` from `@tanstack/react-start`
 - Import `auth` from `#/lib/auth`
 - In `.server()`: get session via `auth.api.getSession({ headers: request.headers })`
@@ -472,6 +483,7 @@ createAuthClient({ plugins: [adminClient()] })
 - Import `redirect` from `@tanstack/react-router`
 
 **requireAdmin**:
+
 - Chain `.middleware([requireAuth])` to get user from context
 - Check `context.user.role === 'admin'`
 - If not admin: `throw redirect({ to: '/' })`
@@ -569,6 +581,7 @@ No unit tests for schema definitions — schema correctness is validated by migr
 ## VALIDATION COMMANDS
 
 ### Level 1: Syntax & Style
+
 ```bash
 npm run check          # Prettier + ESLint auto-fix
 npm run lint           # ESLint check
@@ -576,17 +589,20 @@ npm run format         # Prettier check
 ```
 
 ### Level 2: Build
+
 ```bash
 npm run build          # Full production build — catches all TypeScript errors
 ```
 
 ### Level 3: Database
+
 ```bash
 npm run db:push        # Push schema to PostgreSQL
 npm run db:studio      # Visual verification of all tables
 ```
 
 ### Level 4: Manual Validation
+
 1. `npm run dev` — start dev server
 2. Navigate to `/login` — page renders
 3. Navigate to `/register` — page renders
@@ -597,6 +613,7 @@ npm run db:studio      # Visual verification of all tables
 8. Access any `/_authed/*` route while logged out — redirects to `/login`
 
 ### Level 5: Seed Data
+
 ```bash
 npm run db:seed        # Populate with demo data
 npm run db:studio      # Verify data in all tables
