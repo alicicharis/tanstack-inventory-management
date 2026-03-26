@@ -1,30 +1,56 @@
 ---
-description: 'Break a PRD phase into agent-sized tasks with dependency ordering'
+description: 'Break a single PRD phase into execution-ready agent tasks'
 argument-hint: <phase-name-or-number>
 ---
 
-# Plan Phase: Break a PRD Phase into Agent-Sized Tasks
+# Plan Phase: Break a Single PRD Phase into Execution-Ready Tasks
 
 ## Phase: $ARGUMENTS
 
 ## Mission
 
-Transform a PRD implementation phase into a **sequenced list of agent-sized tasks**, each suitable for a single `/plan-feature` + `/execute` pass. This command does NOT plan implementation details — it produces the task breakdown that feeds into `/plan-feature`.
+Transform **one specific PRD phase** into a sequenced list of **execution-ready tasks**, each suitable for a single `/execute` pass. Each task contains all the context an agent needs to implement it — files to read, patterns to follow, step-by-step instructions, and validation commands.
 
-**Core Principle**: A phase is too big for one agent. A task is the right size. This command finds the seam lines.
+**Core Principle**: A phase is too big for one agent. A task is the right size. This command finds the seam lines AND fills in the implementation details so tasks go straight to execution.
+
+**Scope Rule**: Plan ONLY the phase matching `$ARGUMENTS`. Do not plan other phases. If the phase identifier is ambiguous, ask the user to clarify before proceeding.
 
 ## Inputs
 
 Before starting, locate and read:
 
 1. **The PRD** — Check `.claude/PRD.md`, or ask the user for the path
-2. **The target phase** — Identify the phase section matching `$ARGUMENTS`
+2. **The target phase** — Identify the **single** phase section matching `$ARGUMENTS`. Ignore all other phases.
 3. **CLAUDE.md** — Project conventions and structure
-4. **Current codebase state** — What already exists from prior phases
+4. **Current codebase state** — What already exists from prior phases. Use this to understand available patterns, existing files, and what can be referenced.
 
 ## Process
 
-### Step 1: Extract Phase Scope
+### Step 1: Codebase Intelligence (done once, shared across all tasks)
+
+Analyze the current codebase to build shared context that every task will reference:
+
+**Pattern Recognition:**
+
+- Search for similar implementations already in the codebase
+- Identify coding conventions (naming, file organization, error handling)
+- Find reusable patterns — existing CRUD server functions, component structures, validator shapes
+- Note the specific files that establish these patterns (with line numbers)
+
+**Dependency & Integration Analysis:**
+
+- Catalog external libraries relevant to this phase
+- Map integration points — routers, registrations, config files that need updates
+- Identify existing types, utils, and models that tasks should import from
+
+**Testing Patterns:**
+
+- Identify test framework, structure, and existing examples
+- Note validation commands that work (`npm run build`, `npm run lint`, `npm test`, etc.)
+
+Record this as a **Shared Context** section in the output — tasks will reference it instead of repeating it.
+
+### Step 2: Extract Phase Scope
 
 From the PRD phase section, list every concrete deliverable:
 
@@ -34,7 +60,7 @@ From the PRD phase section, list every concrete deliverable:
 
 Group them into **functional units** — things that work together to produce one testable outcome.
 
-### Step 2: Classify Each Unit
+### Step 3: Classify Each Unit
 
 For each functional unit, assess:
 
@@ -42,7 +68,7 @@ For each functional unit, assess:
 - **Complexity**: Low (follow existing pattern), Medium (new pattern, straightforward), High (subtle logic, edge cases, race conditions)
 - **Estimated new lines of code**: Rough order of magnitude
 
-### Step 3: Apply Splitting Rules
+### Step 4: Apply Splitting Rules
 
 Use these rules to decide what becomes a single task vs. gets split further:
 
@@ -64,7 +90,7 @@ Not a hard limit, but a smell test. If a task would produce significantly more, 
 **Rule 6: Hard-to-review logic gets its own task.**
 Transactional logic, state machines, race-condition-prone code — isolate these so the review is focused.
 
-### Step 4: Map Dependencies
+### Step 5: Map Dependencies
 
 For each task, determine:
 
@@ -74,7 +100,18 @@ For each task, determine:
 
 Build a dependency graph and assign a linear execution order that respects it.
 
-### Step 5: Validate the Breakdown
+### Step 6: Fill In Execution Details Per Task
+
+For each task, using the shared context from Step 1, add:
+
+- **Files to read first** — Specific existing files (with line ranges) the agent must read before implementing. These are the pattern references.
+- **Files to create/modify** — Exact file paths for deliverables.
+- **Implementation steps** — Ordered list using action keywords (CREATE, UPDATE, ADD, MIRROR). Each step is concrete: what to do, what pattern to follow, what to import from where.
+- **Gotchas** — Known pitfalls from codebase analysis (e.g., "use `#/` path alias not `@/`", "wrap stock mutations in `db.transaction()`").
+- **Validation commands** — Executable commands to verify the task is complete.
+- **Acceptance criteria** — Specific, testable conditions for "done".
+
+### Step 7: Validate the Breakdown
 
 Check each task against:
 
@@ -83,7 +120,7 @@ Check each task against:
 - [ ] Stays within one layer (validators, server, UI) or has a strong reason to cross
 - [ ] Does not exceed ~300 lines of new code
 - [ ] Complex logic is isolated, not bundled with boilerplate
-- [ ] Another agent could execute it with only the `/plan-feature` output
+- [ ] Contains enough detail for an agent to execute without additional research
 
 Check the overall breakdown against:
 
@@ -113,22 +150,45 @@ Use this structure:
 
 {What must already exist before this phase begins — prior phase outputs, dependencies, etc.}
 
+## Shared Context
+
+### Patterns to Follow
+
+{Extracted from codebase — specific files with line numbers that establish patterns tasks should mirror}
+
+- `path/to/file.ts` (lines X-Y) — {what pattern it demonstrates}
+- `path/to/other.ts` (lines X-Y) — {what pattern it demonstrates}
+
+### Naming Conventions
+
+{Project-specific conventions discovered from codebase analysis}
+
+### Key Imports & Utils
+
+{Existing types, utilities, and modules that tasks should reuse}
+
+### Gotchas
+
+{Project-wide pitfalls that apply to multiple tasks — path aliases, transaction requirements, etc.}
+
+### Validation Commands
+
+{Commands that work for this project — build, lint, test, etc.}
+
 ## Task Dependency Graph
 
 {ASCII or text representation showing which tasks depend on which}
 ```
-
 Task 1 (validators)
 |
 v
 Task 2 (simple CRUD) ----+
-| |
-v v
-Task 3 (core logic) Task 4 (independent feature)
+|                         |
+v                         v
+Task 3 (core logic)  Task 4 (independent feature)
 |
 v
 Task 5 (workflows depending on core logic)
-
 ```
 
 ## Parallel Groups
@@ -147,14 +207,36 @@ Task 5 (workflows depending on core logic)
 **Depends on**: {Task numbers or "none"}
 **Layer**: Validators / Server / UI / Mixed (with justification)
 
-**Deliverables:**
+### Files to Read First
 
-- {Specific file or function 1}
-- {Specific file or function 2}
+- `path/to/pattern.ts` (lines X-Y) — {why: what pattern to extract}
 
-**Plan command**: `/plan-feature {concise feature description for this task}`
+### Files to Create/Modify
 
-**Validation**: {How to verify this task is complete — command to run, behavior to check}
+- `path/to/new-file.ts` — {purpose}
+- `path/to/existing-file.ts` — {what changes}
+
+### Implementation Steps
+
+1. **CREATE** `path/to/file.ts`
+   - IMPLEMENT: {specific implementation detail}
+   - MIRROR: pattern from `path/to/reference.ts:lines`
+   - IMPORTS: {key imports needed}
+
+2. **UPDATE** `path/to/existing.ts`
+   - ADD: {what to add and where}
+
+3. **VALIDATE**: `{executable command}`
+
+### Gotchas
+
+- {Task-specific pitfalls}
+
+### Acceptance Criteria
+
+- [ ] {Specific testable condition}
+- [ ] {Specific testable condition}
+- [ ] Validation commands pass: `{commands}`
 
 ---
 
@@ -177,7 +259,7 @@ Task 5 (workflows depending on core logic)
 **Total tasks**: {N}
 **Critical path**: Task 1 -> Task 3 -> Task 5 (longest dependency chain)
 **Parallel opportunities**: {describe}
-**Estimated confidence for one-pass execution**: {N}/10 per task (with `/plan-feature` planning each)
+**Estimated confidence for one-pass execution**: {N}/10 per task
 ```
 
 ## Quality Criteria
@@ -201,11 +283,13 @@ Task 5 (workflows depending on core logic)
 - [ ] No deliverable is split across tasks without clear justification
 - [ ] Validation step exists for every task
 
-### Actionability
+### Execution Readiness
 
-- [ ] Each task has a `/plan-feature` command ready to run
+- [ ] Each task has concrete implementation steps (not just descriptions)
+- [ ] Pattern references include specific file paths and line numbers
+- [ ] Files to create/modify are listed with exact paths
 - [ ] "Done when" statements are specific and testable
-- [ ] Layer boundaries are respected
+- [ ] An agent can run `/execute` on any task without needing `/plan-feature` first
 
 ## Output Confirmation
 
@@ -219,7 +303,8 @@ After creating the breakdown:
 
 ## Notes
 
-- This command produces a breakdown, not implementation plans. Run `/plan-feature` for each task before executing.
+- This command produces execution-ready task plans. Run `/execute` directly on each task — no intermediate planning step needed.
+- Only plan the **single phase** specified in `$ARGUMENTS`. If the user wants multiple phases planned, they should run this command once per phase.
 - If the phase scope is ambiguous in the PRD, ask the user to clarify before proceeding.
-- If a phase has fewer than 3 deliverables and low complexity, it may not need splitting — say so and suggest running `/plan-feature` directly on the whole phase.
+- If a phase has fewer than 3 deliverables and low complexity, it may not need splitting — say so and suggest running `/execute` directly on the whole phase.
 - Re-read the codebase to understand what already exists. Don't create tasks for work that's already done.
