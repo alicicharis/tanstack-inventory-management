@@ -17,6 +17,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthedDashboardRouteImport } from './routes/_authed/dashboard'
 import { Route as AuthedWarehousesIndexRouteImport } from './routes/_authed/warehouses/index'
 import { Route as AuthedSuppliersIndexRouteImport } from './routes/_authed/suppliers/index'
+import { Route as AuthedStockIndexRouteImport } from './routes/_authed/stock/index'
 import { Route as AuthedProductsIndexRouteImport } from './routes/_authed/products/index'
 import { Route as AuthedCustomersIndexRouteImport } from './routes/_authed/customers/index'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -66,6 +67,11 @@ const AuthedWarehousesIndexRoute = AuthedWarehousesIndexRouteImport.update({
 const AuthedSuppliersIndexRoute = AuthedSuppliersIndexRouteImport.update({
   id: '/suppliers/',
   path: '/suppliers/',
+  getParentRoute: () => AuthedRouteRoute,
+} as any)
+const AuthedStockIndexRoute = AuthedStockIndexRouteImport.update({
+  id: '/stock/',
+  path: '/stock/',
   getParentRoute: () => AuthedRouteRoute,
 } as any)
 const AuthedProductsIndexRoute = AuthedProductsIndexRouteImport.update({
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/customers/': typeof AuthedCustomersIndexRoute
   '/products/': typeof AuthedProductsIndexRoute
+  '/stock/': typeof AuthedStockIndexRoute
   '/suppliers/': typeof AuthedSuppliersIndexRoute
   '/warehouses/': typeof AuthedWarehousesIndexRoute
 }
@@ -161,6 +168,7 @@ export interface FileRoutesByTo {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/customers': typeof AuthedCustomersIndexRoute
   '/products': typeof AuthedProductsIndexRoute
+  '/stock': typeof AuthedStockIndexRoute
   '/suppliers': typeof AuthedSuppliersIndexRoute
   '/warehouses': typeof AuthedWarehousesIndexRoute
 }
@@ -183,6 +191,7 @@ export interface FileRoutesById {
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/_authed/customers/': typeof AuthedCustomersIndexRoute
   '/_authed/products/': typeof AuthedProductsIndexRoute
+  '/_authed/stock/': typeof AuthedStockIndexRoute
   '/_authed/suppliers/': typeof AuthedSuppliersIndexRoute
   '/_authed/warehouses/': typeof AuthedWarehousesIndexRoute
 }
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/customers/'
     | '/products/'
+    | '/stock/'
     | '/suppliers/'
     | '/warehouses/'
   fileRoutesByTo: FileRoutesByTo
@@ -225,6 +235,7 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/customers'
     | '/products'
+    | '/stock'
     | '/suppliers'
     | '/warehouses'
   id:
@@ -246,6 +257,7 @@ export interface FileRouteTypes {
     | '/api/auth/$'
     | '/_authed/customers/'
     | '/_authed/products/'
+    | '/_authed/stock/'
     | '/_authed/suppliers/'
     | '/_authed/warehouses/'
   fileRoutesById: FileRoutesById
@@ -315,6 +327,13 @@ declare module '@tanstack/react-router' {
       path: '/suppliers'
       fullPath: '/suppliers/'
       preLoaderRoute: typeof AuthedSuppliersIndexRouteImport
+      parentRoute: typeof AuthedRouteRoute
+    }
+    '/_authed/stock/': {
+      id: '/_authed/stock/'
+      path: '/stock'
+      fullPath: '/stock/'
+      preLoaderRoute: typeof AuthedStockIndexRouteImport
       parentRoute: typeof AuthedRouteRoute
     }
     '/_authed/products/': {
@@ -409,6 +428,7 @@ interface AuthedRouteRouteChildren {
   AuthedWarehousesNewRoute: typeof AuthedWarehousesNewRoute
   AuthedCustomersIndexRoute: typeof AuthedCustomersIndexRoute
   AuthedProductsIndexRoute: typeof AuthedProductsIndexRoute
+  AuthedStockIndexRoute: typeof AuthedStockIndexRoute
   AuthedSuppliersIndexRoute: typeof AuthedSuppliersIndexRoute
   AuthedWarehousesIndexRoute: typeof AuthedWarehousesIndexRoute
 }
@@ -425,6 +445,7 @@ const AuthedRouteRouteChildren: AuthedRouteRouteChildren = {
   AuthedWarehousesNewRoute: AuthedWarehousesNewRoute,
   AuthedCustomersIndexRoute: AuthedCustomersIndexRoute,
   AuthedProductsIndexRoute: AuthedProductsIndexRoute,
+  AuthedStockIndexRoute: AuthedStockIndexRoute,
   AuthedSuppliersIndexRoute: AuthedSuppliersIndexRoute,
   AuthedWarehousesIndexRoute: AuthedWarehousesIndexRoute,
 }
