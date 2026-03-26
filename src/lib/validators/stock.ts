@@ -27,5 +27,18 @@ export const adjustStockSchema = z.object({
   notes: z.string().optional(),
 })
 
+export const getMovementsSchema = z.object({
+  page: z.int().positive().optional().default(1),
+  pageSize: z.int().positive().max(100).optional().default(20),
+  productId: z.int().positive().optional(),
+  warehouseId: z.int().positive().optional(),
+  type: z
+    .enum(['RECEIVE', 'SHIP', 'TRANSFER', 'ADJUSTMENT'] as const)
+    .optional(),
+  dateFrom: z.string().datetime().optional(),
+  dateTo: z.string().datetime().optional(),
+})
+
 export type TransferStockInput = z.infer<typeof transferStockSchema>
 export type AdjustStockInput = z.infer<typeof adjustStockSchema>
+export type GetMovementsInput = z.infer<typeof getMovementsSchema>

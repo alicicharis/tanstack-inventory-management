@@ -89,10 +89,18 @@ export const createProduct = createServerFn()
 // Update (validate id + partial body)
 export const updateProduct = createServerFn()
   .middleware([requireAuth])
-  .validator(z.object({ id: z.number().int().positive() }).extend(updateProductSchema.shape))
+  .validator(
+    z
+      .object({ id: z.number().int().positive() })
+      .extend(updateProductSchema.shape),
+  )
   .handler(async ({ data }) => {
     const { id, ...values } = data
-    const [product] = await db.update(products).set({ ...values, updatedAt: new Date() }).where(eq(products.id, id)).returning()
+    const [product] = await db
+      .update(products)
+      .set({ ...values, updatedAt: new Date() })
+      .where(eq(products.id, id))
+      .returning()
     if (!product) throw new Error('Product not found')
     return product
   })
@@ -102,7 +110,10 @@ export const deleteProduct = createServerFn()
   .middleware([requireAuth])
   .validator(z.object({ id: z.number().int().positive() }))
   .handler(async ({ data }) => {
-    const [deleted] = await db.delete(products).where(eq(products.id, data.id)).returning()
+    const [deleted] = await db
+      .delete(products)
+      .where(eq(products.id, data.id))
+      .returning()
     if (!deleted) throw new Error('Product not found')
     return deleted
   })
