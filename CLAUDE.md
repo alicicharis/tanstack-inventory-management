@@ -99,3 +99,4 @@ drizzle/               # Generated migration files
 | Order Workflows  | [.claude/references/order-workflows.md](.claude/references/order-workflows.md)   | PO partial receiving, SO confirm/ship, status transitions, warehouse assignment    |
 | Auth & Roles     | [.claude/references/auth-and-roles.md](.claude/references/auth-and-roles.md)     | Better Auth setup, middleware pattern, admin vs staff, route guards                |
 | Server Patterns  | [.claude/references/server-patterns.md](.claude/references/server-patterns.md)   | CRUD uniformity, validator structure, error philosophy, dashboard parallel queries |
+| UI Conventions   | [.claude/references/ui-conventions.md](.claude/references/ui-conventions.md)     | CRUD page patterns, shared components, form handling, DataTable, layout, stock grid |
