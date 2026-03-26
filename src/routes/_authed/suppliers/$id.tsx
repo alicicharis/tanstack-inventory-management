@@ -1,10 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useState } from 'react'
-import {
-  getSupplier,
-  updateSupplier,
-  deleteSupplier,
-} from '#/server/suppliers'
+import { getSupplier, updateSupplier, deleteSupplier } from '#/server/suppliers'
 import { PageHeader } from '#/components/page-header'
 import { Button } from '#/components/ui/button'
 import { Input } from '#/components/ui/input'

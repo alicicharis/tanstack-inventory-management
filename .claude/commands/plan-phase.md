@@ -179,16 +179,18 @@ Use this structure:
 
 {ASCII or text representation showing which tasks depend on which}
 ```
+
 Task 1 (validators)
 |
 v
 Task 2 (simple CRUD) ----+
-|                         |
-v                         v
-Task 3 (core logic)  Task 4 (independent feature)
+| |
+v v
+Task 3 (core logic) Task 4 (independent feature)
 |
 v
 Task 5 (workflows depending on core logic)
+
 ```
 
 ## Parallel Groups

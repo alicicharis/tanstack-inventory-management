@@ -39,7 +39,10 @@ function NewProductPage() {
 
   return (
     <main className="mx-auto max-w-2xl px-4 py-12">
-      <PageHeader title="New Product" description="Add a new product to the catalog" />
+      <PageHeader
+        title="New Product"
+        description="Add a new product to the catalog"
+      />
       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
         <div className="space-y-2">
           <Label htmlFor="sku">SKU</Label>
@@ -63,7 +66,13 @@ function NewProductPage() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="reorderPoint">Reorder Point</Label>
-          <Input id="reorderPoint" name="reorderPoint" type="number" min={0} defaultValue={0} />
+          <Input
+            id="reorderPoint"
+            name="reorderPoint"
+            type="number"
+            min={0}
+            defaultValue={0}
+          />
         </div>
         <div className="flex gap-2 pt-4">
           <Button type="submit" disabled={submitting}>

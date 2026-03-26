@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { listSuppliers } from '#/server/suppliers'
-import { DataTable, type Column } from '#/components/data-table'
+import { DataTable  } from '#/components/data-table'
+import type {Column} from '#/components/data-table';
 import { PageHeader } from '#/components/page-header'
 import { Button } from '#/components/ui/button'
 
@@ -42,7 +43,9 @@ function SuppliersPage() {
       <DataTable
         columns={columns}
         data={suppliers}
-        onRowClick={(row) => navigate({ to: '/suppliers/$id', params: { id: String(row.id) } })}
+        onRowClick={(row) =>
+          navigate({ to: '/suppliers/$id', params: { id: String(row.id) } })
+        }
         emptyMessage="No suppliers found."
       />
     </main>

@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { listProducts } from '#/server/products'
 import { PageHeader } from '#/components/page-header'
-import { DataTable, type Column } from '#/components/data-table'
+import { DataTable  } from '#/components/data-table'
+import type {Column} from '#/components/data-table';
 import { Button } from '#/components/ui/button'
 
 export const Route = createFileRoute('/_authed/products/')({
@@ -46,7 +47,10 @@ function ProductsListPage() {
           columns={columns}
           data={products}
           onRowClick={(product) =>
-            navigate({ to: '/products/$id', params: { id: String(product.id) } })
+            navigate({
+              to: '/products/$id',
+              params: { id: String(product.id) },
+            })
           }
           emptyMessage="No products found."
         />

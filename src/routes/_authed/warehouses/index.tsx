@@ -1,7 +1,8 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { listWarehouses } from '#/server/warehouses'
 import { PageHeader } from '#/components/page-header'
-import { DataTable, type Column } from '#/components/data-table'
+import { DataTable  } from '#/components/data-table'
+import type {Column} from '#/components/data-table';
 import { Button } from '#/components/ui/button'
 
 interface WarehouseRow {
@@ -48,7 +49,9 @@ function WarehousesListPage() {
       <DataTable
         columns={columns}
         data={warehouses}
-        onRowClick={(row) => navigate({ to: '/warehouses/$id', params: { id: String(row.id) } })}
+        onRowClick={(row) =>
+          navigate({ to: '/warehouses/$id', params: { id: String(row.id) } })
+        }
         emptyMessage="No warehouses found."
       />
     </main>

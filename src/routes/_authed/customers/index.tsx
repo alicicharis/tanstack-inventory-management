@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import { listCustomers } from '#/server/customers'
-import { DataTable, type Column } from '#/components/data-table'
+import { DataTable  } from '#/components/data-table'
+import type {Column} from '#/components/data-table';
 import { PageHeader } from '#/components/page-header'
 import { Button } from '#/components/ui/button'
 
@@ -42,7 +43,9 @@ function CustomersPage() {
       <DataTable
         columns={columns}
         data={customers}
-        onRowClick={(row) => navigate({ to: '/customers/$id', params: { id: String(row.id) } })}
+        onRowClick={(row) =>
+          navigate({ to: '/customers/$id', params: { id: String(row.id) } })
+        }
         emptyMessage="No customers found."
       />
     </main>

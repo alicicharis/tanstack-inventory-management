@@ -86,9 +86,7 @@ function StockOverviewPage() {
   const filteredStock =
     warehouseFilter === 'all'
       ? stockData
-      : stockData.filter(
-          (s) => s.warehouse.id === Number(warehouseFilter),
-        )
+      : stockData.filter((s) => s.warehouse.id === Number(warehouseFilter))
 
   const grid = buildGrid(filteredStock)
 
@@ -103,7 +101,10 @@ function StockOverviewPage() {
         title="Stock Overview"
         description="Product quantities across all warehouses"
         action={
-          <Select value={warehouseFilter} onValueChange={(v) => setWarehouseFilter(v ?? 'all')}>
+          <Select
+            value={warehouseFilter}
+            onValueChange={(v) => setWarehouseFilter(v ?? 'all')}
+          >
             <SelectTrigger className="w-48">
               <SelectValue placeholder="All Warehouses" />
             </SelectTrigger>
@@ -163,9 +164,7 @@ function StockOverviewPage() {
             ) : (
               grid.map((row) => (
                 <TableRow key={row.productId}>
-                  <TableCell className="font-mono text-sm">
-                    {row.sku}
-                  </TableCell>
+                  <TableCell className="font-mono text-sm">{row.sku}</TableCell>
                   <TableCell>{row.productName}</TableCell>
                   {displayWarehouses.map((w) => {
                     const qty = row.quantities[w.id] ?? 0

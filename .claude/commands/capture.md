@@ -11,7 +11,7 @@ After completing implementation work, extract and persist valuable knowledge so 
 
 Review the current conversation to identify:
 
-- **Decisions made** — choices between alternatives and *why* one was picked
+- **Decisions made** — choices between alternatives and _why_ one was picked
 - **Patterns established** — new conventions, reusable approaches, architectural patterns
 - **Gotchas discovered** — things that broke, framework quirks, non-obvious behaviors
 - **Conventions that emerged** — coding patterns that should be followed going forward
@@ -44,20 +44,25 @@ For each topic with meaningful knowledge, check `.claude/references/` for an **e
 # [Topic Title]
 
 ## Overview
+
 Brief summary of the approach and core design.
 
 ## Key Decisions
+
 - **Decision**: What was chosen
   - **Why**: The reasoning
   - **Alternatives considered**: What was rejected and why
 
 ## Patterns & Conventions
+
 - Pattern name: how it works, when to use it
 
 ## Gotchas & Pitfalls
+
 - What went wrong or was non-obvious, and how to avoid it
 
 ## Key Files
+
 - `path/to/file.ts` — what it does and why it matters
 ```
 
@@ -66,6 +71,7 @@ Only include sections that have meaningful content — skip empty ones.
 ## 4. Update CLAUDE.md
 
 **Conventions**: Check if any new conventions should be added to `CLAUDE.md`. Only add things that are:
+
 - Applicable to **all future work** in this project (not topic-specific)
 - Not already covered by existing conventions
 - Genuinely useful as a rule (not just documentation)
@@ -77,6 +83,7 @@ If nothing qualifies, skip this.
 ## 5. Summary
 
 Tell the user:
+
 - What reference doc(s) were created or updated (and whether it was a create vs update)
 - What (if anything) was added to CLAUDE.md
 - A brief list of the most important knowledge captured

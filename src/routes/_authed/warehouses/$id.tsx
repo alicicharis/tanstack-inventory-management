@@ -74,10 +74,13 @@ function WarehouseDetailPage() {
         <Card>
           <CardContent className="pt-6 space-y-2">
             <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Capacity Utilization</span>
+              <span className="text-muted-foreground">
+                Capacity Utilization
+              </span>
               <span className="font-medium">
                 {warehouse.currentUtilization.toLocaleString()} /{' '}
-                {warehouse.totalCapacity!.toLocaleString()} ({utilizationPercent}%)
+                {warehouse.totalCapacity!.toLocaleString()} (
+                {utilizationPercent}%)
               </span>
             </div>
             <div className="h-3 w-full overflow-hidden rounded-full bg-muted">

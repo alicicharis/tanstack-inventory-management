@@ -83,15 +83,27 @@ function ProductDetailPage() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="description">Description</Label>
-          <Textarea id="description" name="description" defaultValue={product.description ?? ''} />
+          <Textarea
+            id="description"
+            name="description"
+            defaultValue={product.description ?? ''}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="category">Category</Label>
-          <Input id="category" name="category" defaultValue={product.category ?? ''} />
+          <Input
+            id="category"
+            name="category"
+            defaultValue={product.category ?? ''}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="unitOfMeasure">Unit of Measure</Label>
-          <Input id="unitOfMeasure" name="unitOfMeasure" defaultValue={product.unitOfMeasure} />
+          <Input
+            id="unitOfMeasure"
+            name="unitOfMeasure"
+            defaultValue={product.unitOfMeasure}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="reorderPoint">Reorder Point</Label>
@@ -110,7 +122,11 @@ function ProductDetailPage() {
           <Dialog>
             <DialogTrigger
               render={
-                <Button type="button" variant="destructive" disabled={deleting} />
+                <Button
+                  type="button"
+                  variant="destructive"
+                  disabled={deleting}
+                />
               }
             >
               {deleting ? 'Deleting...' : 'Delete'}
@@ -119,12 +135,19 @@ function ProductDetailPage() {
               <DialogHeader>
                 <DialogTitle>Delete Product</DialogTitle>
                 <DialogDescription>
-                  Are you sure you want to delete "{product.name}"? This action cannot be undone.
+                  Are you sure you want to delete "{product.name}"? This action
+                  cannot be undone.
                 </DialogDescription>
               </DialogHeader>
               <DialogFooter>
-                <DialogClose render={<Button variant="outline" />}>Cancel</DialogClose>
-                <Button variant="destructive" onClick={handleDelete} disabled={deleting}>
+                <DialogClose render={<Button variant="outline" />}>
+                  Cancel
+                </DialogClose>
+                <Button
+                  variant="destructive"
+                  onClick={handleDelete}
+                  disabled={deleting}
+                >
                   {deleting ? 'Deleting...' : 'Confirm Delete'}
                 </Button>
               </DialogFooter>

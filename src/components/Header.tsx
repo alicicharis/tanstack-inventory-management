@@ -21,20 +21,48 @@ export default function Header() {
           <ThemeToggle />
         </div>
 
-        <div className="order-3 flex w-full flex-wrap items-center gap-x-4 gap-y-1 pb-1 text-sm font-semibold sm:order-2 sm:w-auto sm:flex-nowrap sm:pb-0">
+        <div className="order-3 flex w-full flex-wrap items-center gap-x-4 gap-y-1 pb-1 text-sm font-semibold md:hidden sm:order-2 sm:w-auto sm:flex-nowrap sm:pb-0">
           <Link
-            to="/"
+            to="/dashboard"
             className="text-muted-foreground hover:text-foreground"
             activeProps={{ className: 'text-foreground font-medium' }}
           >
-            Home
+            Dashboard
           </Link>
           <Link
-            to="/about"
+            to="/products"
             className="text-muted-foreground hover:text-foreground"
             activeProps={{ className: 'text-foreground font-medium' }}
           >
-            About
+            Products
+          </Link>
+          <Link
+            to="/warehouses"
+            className="text-muted-foreground hover:text-foreground"
+            activeProps={{ className: 'text-foreground font-medium' }}
+          >
+            Warehouses
+          </Link>
+          <Link
+            to="/stock"
+            className="text-muted-foreground hover:text-foreground"
+            activeProps={{ className: 'text-foreground font-medium' }}
+          >
+            Stock
+          </Link>
+          <Link
+            to="/suppliers"
+            className="text-muted-foreground hover:text-foreground"
+            activeProps={{ className: 'text-foreground font-medium' }}
+          >
+            Suppliers
+          </Link>
+          <Link
+            to="/customers"
+            className="text-muted-foreground hover:text-foreground"
+            activeProps={{ className: 'text-foreground font-medium' }}
+          >
+            Customers
           </Link>
         </div>
       </nav>

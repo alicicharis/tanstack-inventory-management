@@ -92,10 +92,10 @@ drizzle/               # Generated migration files
 
 ## References
 
-| Topic          | File                                                             | Description                                                             |
-| -------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------- |
-| TanStack Start    | [.claude/references/tanstack.md](.claude/references/tanstack.md)                   | Server functions, middleware, routing gotchas, request/response helpers            |
-| Stock Operations  | [.claude/references/stock-operations.md](.claude/references/stock-operations.md)   | Ledger pattern, upserts, transactions, movement direction, adjustment gotchas     |
-| Order Workflows   | [.claude/references/order-workflows.md](.claude/references/order-workflows.md)     | PO partial receiving, SO confirm/ship, status transitions, warehouse assignment   |
-| Auth & Roles      | [.claude/references/auth-and-roles.md](.claude/references/auth-and-roles.md)       | Better Auth setup, middleware pattern, admin vs staff, route guards               |
-| Server Patterns   | [.claude/references/server-patterns.md](.claude/references/server-patterns.md)     | CRUD uniformity, validator structure, error philosophy, dashboard parallel queries |
+| Topic            | File                                                                             | Description                                                                        |
+| ---------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| TanStack Start   | [.claude/references/tanstack.md](.claude/references/tanstack.md)                 | Server functions, middleware, routing gotchas, request/response helpers            |
+| Stock Operations | [.claude/references/stock-operations.md](.claude/references/stock-operations.md) | Ledger pattern, upserts, transactions, movement direction, adjustment gotchas      |
+| Order Workflows  | [.claude/references/order-workflows.md](.claude/references/order-workflows.md)   | PO partial receiving, SO confirm/ship, status transitions, warehouse assignment    |
+| Auth & Roles     | [.claude/references/auth-and-roles.md](.claude/references/auth-and-roles.md)     | Better Auth setup, middleware pattern, admin vs staff, route guards                |
+| Server Patterns  | [.claude/references/server-patterns.md](.claude/references/server-patterns.md)   | CRUD uniformity, validator structure, error philosophy, dashboard parallel queries |
