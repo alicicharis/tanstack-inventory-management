@@ -1,5 +1,7 @@
 # TitanWMS - Inventory Management System
 
+- Default all file operations to the project working directory unless explicitly told otherwise
+
 ## Project Overview
 
 Full-stack inventory/warehouse management app built with TanStack Start (React SSR framework) and PostgreSQL.
@@ -90,6 +92,6 @@ drizzle/               # Generated migration files
 
 ## References
 
-| Topic | File | Description |
-|-------|------|-------------|
+| Topic          | File                                                             | Description                                                             |
+| -------------- | ---------------------------------------------------------------- | ----------------------------------------------------------------------- |
 | TanStack Start | [.claude/references/tanstack.md](.claude/references/tanstack.md) | Server functions, middleware, routing gotchas, request/response helpers |

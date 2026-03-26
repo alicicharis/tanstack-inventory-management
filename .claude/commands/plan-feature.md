@@ -62,7 +62,7 @@ So that <benefit/value>
 
 - Catalog external libraries relevant to feature
 - Understand how libraries are integrated (check imports, configs)
-- Find relevant documentation in docs/, ai_docs/, .agents/reference or ai-wiki if available
+- Find relevant documentation in docs/, ai_docs/, .agents/reference, .claude/reference or ai-wiki if available
 - Note library versions and compatibility requirements
 
 **4. Testing Patterns**
@@ -374,12 +374,13 @@ Execute every command to ensure zero regressions and 100% feature correctness.
 
 ## Output Format
 
-**Filename**: `.agents/plans/{kebab-case-descriptive-name}.md`
+**Filename**: `.claude/plans/phase-{N}-{kebab-case-task-name}.md`
 
-- Replace `{kebab-case-descriptive-name}` with short, descriptive feature name
-- Examples: `add-user-authentication.md`, `implement-search-api.md`, `refactor-database-layer.md`
+- `{N}` is the phase number (if part of a phase breakdown), omit the `phase-{N}-` prefix for standalone features
+- `{kebab-case-task-name}` is a short, descriptive name for the task
+- Examples: `phase-2-zod-validators.md`, `phase-2-crud-server-functions.md`, `phase-3-product-pages.md`, `add-user-authentication.md`
 
-**Directory**: Create `.agents/plans/` if it doesn't exist
+**Directory**: Create `.claude/plans/` if it doesn't exist
 
 ## Quality Criteria
 
